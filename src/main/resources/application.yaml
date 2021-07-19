@@ -1,3 +1,14 @@
 bot:
     name: edemAppBot
     token: 1795063098:AAFqxhu7zm6-cpqqJ7ysPZUi96va1uVOxnQ
+spring:
+    datasource:
+        url: jdbc:postgresql://37.140.195.194/main?useSSL=false
+        password: prilkijivi?@zaebali
+        username: kalik
+    jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+        hibernate:
+            ddl-auto: update
+
+

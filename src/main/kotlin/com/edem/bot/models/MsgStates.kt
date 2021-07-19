@@ -7,6 +7,8 @@ sealed class MsgStates {
     class CreateNamingState(val appId : String) : MsgStates()
     class AddOrganicState(val appId : String) : MsgStates()
     class RemoveAdsIdState(val appId : String) : MsgStates()
+    class Successful(val option : String) : MsgStates()
     object Error : MsgStates()
 }
+
 

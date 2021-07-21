@@ -13,7 +13,8 @@ class KabsService(
         val ad = KabEntity(
                 kab = kab,
                 chat_id = chatId.toString(),
-                app_ide = appId
+                app_ide = appId,
+                status = "waiting"
         )
         kabsRepository.save(ad)
     }

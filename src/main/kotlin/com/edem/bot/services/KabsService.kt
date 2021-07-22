@@ -19,4 +19,17 @@ class KabsService(
         kabsRepository.save(ad)
     }
 
+    fun addKabs(kabs : String, chatId: Long, appId: String){
+        val kabEntities : List<KabEntity> = kabs.split(",").map {
+            KabEntity(
+                    kab = it,
+                    chat_id = chatId.toString(),
+                    app_ide = appId,
+                    status = "wait"
+            )
+        }
+        kabsRepository.saveAll(kabEntities)
+
+    }
+
 }

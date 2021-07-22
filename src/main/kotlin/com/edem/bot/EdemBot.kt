@@ -9,6 +9,7 @@ import com.edem.bot.repos.KabsRepository
 import com.edem.bot.services.KabsService
 import com.edem.bot.utills.Keyboard
 import com.edem.bot.utills.isInteger
+import com.edem.bot.utills.isKab
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
@@ -42,8 +43,8 @@ class EdemBot(
                 when {
                     //todo кабинеты через запятую
                     msgText == "/start" -> MsgStates.StartState
-                    msgText.isInteger() && (globalState is MsgStates.AddAdsIdState) -> {
-                        kabsService.addKab(msgText, message.chatId, (globalState as MsgStates.AddAdsIdState).appId)
+                    msgText.isKab() && (globalState is MsgStates.AddAdsIdState) -> {
+                        kabsService.addKabs(msgText, message.chatId, (globalState as MsgStates.AddAdsIdState).appId)
                         MsgStates.Successful("Добавление кабинетов")
                     }
                     else -> MsgStates.Error

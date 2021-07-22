@@ -5,7 +5,7 @@ class MsgText {
         const val START = "Hi"
         const val CHOOSE_APP = "Ну приветики, на какую прилу желаешь залится?"
         const val ERROR = "ERorr?"
-        const val ADD_ADS_ID = "Ну добавляй, надеюсь они рабочие"
+        const val ADD_ADS_ID = "Для добавления РК, введите ID через запятую, без пробелов"
         const val ORGANIC = "Organic"
         const val CREATE_NAMING = "Naming"
         const val REMOVE_AD_ID = "Za chto?"

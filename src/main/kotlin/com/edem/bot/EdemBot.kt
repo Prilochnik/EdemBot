@@ -11,6 +11,7 @@ import com.edem.bot.utills.Keyboard
 import com.edem.bot.utills.isInteger
 import com.edem.bot.utills.isKab
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage
@@ -18,7 +19,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageRe
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText
 import org.telegram.telegrambots.meta.api.objects.Update
 
-@Service
+@Component
 class EdemBot(
         private val appService : AppService,
         private val kabsService: KabsService
@@ -133,7 +134,7 @@ class EdemBot(
             is MsgStates.Successful -> {
                 ResponseModel(
                         chatId = chatId,
-                        msg = MsgText.successful(state.option),
+                        msg = MsgText.KABS_IN_PROCESS,
                         buttons = listOf(listOf(Button.BACK))
                 )
             }

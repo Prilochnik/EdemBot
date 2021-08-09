@@ -7,9 +7,11 @@ import com.edem.bot.services.AppService
 import com.edem.bot.models.Button
 import com.edem.bot.repos.KabsRepository
 import com.edem.bot.services.KabsService
+import com.edem.bot.services.NamingAndOrganicService
 import com.edem.bot.utills.Keyboard
 import com.edem.bot.utills.isInteger
 import com.edem.bot.utills.isKab
+import com.edem.bot.utills.isNaming
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -22,7 +24,8 @@ import org.telegram.telegrambots.meta.api.objects.Update
 @Component
 class EdemBot(
         private val appService : AppService,
-        private val kabsService: KabsService
+        private val kabsService: KabsService,
+        private val namingAndOrganicService: NamingAndOrganicService
 ) : TelegramLongPollingBot() {
 
     @Value("\${bot.name}")
@@ -47,6 +50,10 @@ class EdemBot(
                     msgText.isKab() && (globalState is MsgStates.AddAdsIdState) -> {
                         kabsService.addKabs(msgText, message.chatId, (globalState as MsgStates.AddAdsIdState).appId)
                         MsgStates.Successful("Добавление кабинетов")
+                    }
+                    msgText.isNaming() && (globalState is MsgStates.CreateNamingState) -> {
+                        execute(SendMessage().setChatId(chatId).setText(namingAndOrganicService.createNaming(msgText)))
+                        MsgStates.Successful("Создание нейминга")
                     }
                     else -> MsgStates.Error
                 }
@@ -75,7 +82,9 @@ class EdemBot(
         }
     }
 
+    fun sendTextMessage(chatId: Long){
 
+    }
 
     fun sendInlineMsg(chatId: Long, state : MsgStates, msgId : Int) {
         globalState = state
@@ -92,7 +101,7 @@ class EdemBot(
             is MsgStates.AppChosenState -> {
                 ResponseModel(
                         chatId = chatId,
-                        msg = MsgText.appChosen(state.appId),
+                        msg = MsgText.appChosen(state.appId, appService.createLink(state.appId)),
                         buttons = listOf(listOf(Button.addAdsButtonText), listOf(Button.namingButtonText), listOf(Button.organicButtonText), listOf(Button.BACK))
                 )
             }
@@ -134,7 +143,7 @@ class EdemBot(
             is MsgStates.Successful -> {
                 ResponseModel(
                         chatId = chatId,
-                        msg = MsgText.KABS_IN_PROCESS,
+                        msg = MsgText.successful(state.option),
                         buttons = listOf(listOf(Button.BACK))
                 )
             }

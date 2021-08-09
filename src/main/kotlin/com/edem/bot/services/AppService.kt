@@ -16,4 +16,7 @@ class AppService(
                 .map {
                     listOf("${it.appIde!!} ${it.appName}")
                 }
+
+    fun createLink(appName : String) =
+            "https://play.google.com/store/apps/details?id=${appRepository.findAppEntityByAppIde(appName.split(" ")[0]).appPackage}"
 }

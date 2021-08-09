@@ -7,11 +7,11 @@ class MsgText {
         const val ERROR = "ERorr?"
         const val ADD_ADS_ID = "Для добавления РК, введите ID через запятую, без пробелов"
         const val ORGANIC = "Organic"
-        const val CREATE_NAMING = "Naming"
+        const val CREATE_NAMING = "Введите ссылку с доменом edem.site"
         const val REMOVE_AD_ID = "Za chto?"
         const val KABS_IN_PROCESS = "Кабинеты в процессе добавления"
 
-        fun successful(option : String) = "$option Выполнено успешно"
-        fun appChosen(appId : String) = "Допустим ты выбрал ${appId}, дальше то что?"
+        fun successful(option : String) = "$option в процессе"
+        fun appChosen(appId : String, link : String) = "Допустим ты выбрал ${appId}, \n$link?"
     }
 }

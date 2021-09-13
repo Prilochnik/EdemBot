@@ -11,6 +11,7 @@ class Button {
         const val cancel : String = "Назад"
         const val add : String = "Добавляй заебал"
         const val BACK : String = "<- Nazad"
+        const val UACButtonText = "Добавить кабинет ЮАК"
 
         fun link(app : String, apps : List<AppEntity>) : String {
             apps.forEach {

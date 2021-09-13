@@ -8,10 +8,7 @@ import com.edem.bot.models.Button
 import com.edem.bot.repos.KabsRepository
 import com.edem.bot.services.KabsService
 import com.edem.bot.services.NamingAndOrganicService
-import com.edem.bot.utills.Keyboard
-import com.edem.bot.utills.isInteger
-import com.edem.bot.utills.isKab
-import com.edem.bot.utills.isNaming
+import com.edem.bot.utills.*
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Component
 import org.springframework.stereotype.Service
@@ -47,8 +44,12 @@ class EdemBot(
                 when {
                     //todo кабинеты через запятую
                     msgText == "/start" -> MsgStates.StartState
-                    msgText.isKab() && (globalState is MsgStates.AddAdsIdState) -> {
+                    (msgText.isKab() || msgText.isKabEnter()) && (globalState is MsgStates.AddAdsIdState) -> {
                         kabsService.addKabs(msgText, message.chatId, (globalState as MsgStates.AddAdsIdState).appId)
+                        MsgStates.Successful("Добавление кабинетов")
+                    }
+                    msgText.isUakKabEnter() && (globalState is MsgStates.AddUAKIdState) -> {
+                        kabsService.addUAKKabs(msgText, message.chatId, (globalState as MsgStates.AddUAKIdState).appId)
                         MsgStates.Successful("Добавление кабинетов")
                     }
                     msgText.isNaming() && (globalState is MsgStates.CreateNamingState) -> {
@@ -74,6 +75,7 @@ class EdemBot(
                 msgText == Button.addAdsButtonText -> MsgStates.AddAdsIdState((globalState as MsgStates.AppChosenState).appId)
                 msgText == Button.namingButtonText -> MsgStates.CreateNamingState((globalState as MsgStates.AppChosenState).appId)
                 msgText == Button.organicButtonText -> MsgStates.AddOrganicState((globalState as MsgStates.AppChosenState).appId)
+                msgText == Button.UACButtonText -> MsgStates.AddUAKIdState((globalState as MsgStates.AppChosenState).appId)
                 msgText == Button.cancel -> MsgStates.StartState
                 msgText == Button.BACK -> MsgStates.StartState
                 else -> MsgStates.Error
@@ -102,7 +104,13 @@ class EdemBot(
                 ResponseModel(
                         chatId = chatId,
                         msg = MsgText.appChosen(state.appId, appService.createLink(state.appId)),
-                        buttons = listOf(listOf(Button.addAdsButtonText), listOf(Button.namingButtonText), listOf(Button.organicButtonText), listOf(Button.BACK))
+                        buttons = listOf(
+                            listOf(Button.addAdsButtonText),
+                            listOf(Button.UACButtonText),
+                            listOf(Button.namingButtonText),
+                            listOf(Button.organicButtonText),
+                            listOf(Button.BACK)
+                        )
                 )
             }
             is MsgStates.AddAdsIdState ->{
@@ -110,6 +118,13 @@ class EdemBot(
                         chatId = chatId,
                         msg = MsgText.ADD_ADS_ID,
                         buttons = listOf(listOf(Button.cancel))
+                )
+            }
+            is MsgStates.AddUAKIdState -> {
+                ResponseModel(
+                    chatId = chatId,
+                    msg = MsgText.UAK_ADS,
+                    buttons = listOf(listOf(Button.cancel))
                 )
             }
             is MsgStates.AddOrganicState -> {

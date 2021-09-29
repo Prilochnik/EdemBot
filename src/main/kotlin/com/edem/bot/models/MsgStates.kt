@@ -1,7 +1,8 @@
 package com.edem.bot.models
 
 sealed class MsgStates {
-    object StartState : MsgStates()
+    class StartState(val appsId : List<String>) : MsgStates()
+    object AuthState : MsgStates()
     class AppChosenState(val appId : String) : MsgStates()
     class AddAdsIdState(val appId : String) : MsgStates()
     class AddUAKIdState(val appId: String) : MsgStates()

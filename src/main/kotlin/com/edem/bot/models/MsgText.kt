@@ -12,6 +12,7 @@ class MsgText {
         const val REMOVE_AD_ID = "Za chto?"
         const val KABS_IN_PROCESS = "Кабинеты в процессе добавления"
 
+        fun authToken(token : String) = "Your user id is $token"
         fun successful(option : String) = "$option в процессе"
         fun appChosen(appId : String, link : String) = "Допустим ты выбрал ${appId}, \n$link?"
     }
